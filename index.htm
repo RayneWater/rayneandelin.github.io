@@ -17,14 +17,15 @@
             color: #fff;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden; 
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow: hidden; 
         }
 
-        /* --- Loading Screen & Heart Rain --- */
+        /* --- LOADING GLOW & HEART RAIN --- */
+        @keyframes brandGlow {
+            from { text-shadow: 0 0 5px var(--pastel-orange); }
+            to { text-shadow: 0 0 25px var(--pastel-orange), 0 0 40px #fff; }
+        }
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); z-index: 10000;
@@ -36,7 +37,7 @@
         }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-        /* --- Shutter Door Animation --- */
+        /* --- SHUTTER DOORS --- */
         .shutter {
             position: fixed; left: 0; width: 100%; height: 50.5%;
             background: var(--bg-dark); z-index: 9999;
@@ -45,47 +46,46 @@
         }
         #shutter-top { top: 0; }
         #shutter-bottom { bottom: 0; }
-        
         body.open { overflow-y: auto; }
         body.open #shutter-top { transform: translateY(-100%); }
         body.open #shutter-bottom { transform: translateY(100%); }
 
-        /* --- Main Content Header & Glitch --- */
-        #main-content { visibility: hidden; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .glitch-text { 
-            color: var(--pastel-orange); font-size: 2rem; font-weight: bold; margin: 0; position: relative;
-            text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.05em 0 rgba(0, 255, 0, 0.75), 0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
-            animation: glitch 500ms infinite;
-        }
-        @keyframes glitch {
-            0%, 14% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
-            15%, 49% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
-            50%, 99% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
-            100% { text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em -0.05em 0 rgba(0, 0, 255, 0.75); }
+        /* --- AUDIO REACTIVE HEADER --- */
+        #visualizer-text {
+            color: var(--pastel-orange); font-size: 2.2rem; font-weight: bold;
+            margin: 0; position: relative; transition: transform 0.05s linear;
+            text-shadow: 2px 0 0 rgba(255,0,0,0.5), -2px 0 0 rgba(0,255,255,0.5);
+            animation: brandGlow 2s infinite alternate;
         }
 
-        /* --- Particles --- */
+        /* --- DRIFTING PARTICLES --- */
         #particle-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .particle { position: absolute; font-size: 1.8rem; opacity: 0.3; animation: drift linear infinite; }
         @keyframes drift { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-10vh) rotate(360deg); } }
 
-        /* --- Audio Controls --- */
-        .audio-controls { margin-top: 15px; display: flex; align-items: center; gap: 10px; color: var(--pastel-blue); font-size: 0.8rem; }
-        input[type=range] { -webkit-appearance: none; background: rgba(174, 198, 207, 0.2); border-radius: 5px; height: 5px; width: 100px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; background: var(--pastel-orange); border-radius: 50%; cursor: pointer; box-shadow: 0 0 5px var(--pastel-orange); }
-
-        /* --- Stats & Modules --- */
-        .stats-box { border: 1px solid var(--pastel-blue); padding: 20px; background: rgba(174, 198, 207, 0.05); text-align: center; width: 100%; max-width: 600px; }
-        .stat-highlight { color: var(--pastel-orange); font-weight: bold; text-shadow: 0 0 10px var(--pastel-orange); }
-
-        /* --- Gallery --- */
-        .gallery { display: grid; gap: 20px; width: 100%; max-width: 1100px; grid-template-columns: repeat(3, 1fr); margin-top: 20px; }
+        /* --- GALLERY & TILT --- */
+        .gallery { 
+            display: grid; gap: 20px; width: 100%; max-width: 1100px; 
+            grid-template-columns: repeat(3, 1fr); margin-top: 20px;
+        }
         @media (max-width: 768px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
-        .polaroid { background: #fff; padding: 8px 8px 30px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); cursor: zoom-in; transition: 0.4s; }
-        .polaroid:hover { transform: rotateX(8deg) rotateY(8deg) scale(1.05); }
-        .polaroid img { width: 100%; height: 280px; object-fit: cover; }
-        .caption { color: #333; text-align: center; font-weight: bold; font-size: 0.8rem; margin-top: 10px; }
+        .polaroid { 
+            background: #fff; padding: 10px 10px 30px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+            transition: transform 0.4s ease; cursor: zoom-in; 
+        }
+        .polaroid:hover { transform: rotateX(8deg) rotateY(8deg) scale(1.05); z-index: 10; }
+        .polaroid img { width: 100%; height: 280px; object-fit: cover; pointer-events: none; }
+        
+        /* --- LIGHTBOX --- */
+        #lightbox { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 20000; justify-content: center; align-items: center; 
+        }
+        #lightbox.active { display: flex; }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 5px solid #fff; transform: scale(0.5); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #lightbox.active img { transform: scale(1); }
 
+        .stat-highlight { color: var(--pastel-orange); font-weight: bold; text-shadow: 0 0 10px var(--pastel-orange); }
         footer { margin-top: 60px; padding: 40px; text-align: center; border-top: 1px solid rgba(174,198,207,0.2); width: 100%; }
         .glow { color: var(--pastel-orange); text-shadow: 0 0 10px var(--pastel-orange); font-weight: bold; }
     </style>
@@ -95,56 +95,39 @@
     <div id="loader">
         <div id="heart-rain-container"></div>
         <div style="color:var(--pastel-orange); letter-spacing:8px; font-weight:bold; animation: brandGlow 2s infinite alternate;">RAYNEWATER PROJECTS</div>
-        <div id="status" style="color:var(--pastel-blue); font-size:0.8rem; margin: 15px 0;">INITIALIZING...</div>
+        <div id="status" style="color:var(--pastel-blue); font-size:0.8rem; margin: 15px 0;">INITIALIZING CELEBRATION PROTOCOLS...</div>
         <div style="width:280px; height:40px; border:2px solid var(--pastel-blue); border-radius:20px; position:relative; overflow:hidden;">
-            <div id="water-level" style="position:absolute; bottom:0; left:0; width:100%; height:0%; background:var(--water-color); transition:0.1s;"></div>
+            <div id="water-level" style="position:absolute; bottom:0; left:0; width:100%; height:0%; background:var(--water-color); transition:0.1s linear;"></div>
         </div>
-        <button id="start-btn" onclick="openVault()" style="display:none; margin-top:20px; background:transparent; color:var(--pastel-orange); border:1px solid var(--pastel-orange); padding:10px 20px; cursor:pointer; border-radius:5px;">[ ENTER EXPERIENCE ]</button>
+        <button id="start-btn" onclick="openVault()" style="display:none; margin-top:20px; background:transparent; color:var(--pastel-orange); border:1px solid var(--pastel-orange); padding:10px 20px; cursor:pointer; border-radius:5px; box-shadow: 0 0 10px var(--pastel-orange);">[ ENTER EXPERIENCE ]</button>
     </div>
 
     <div class="shutter" id="shutter-top"></div>
     <div class="shutter" id="shutter-bottom"></div>
 
-    <div id="main-content">
+    <div id="main-content" style="visibility:hidden; display:flex; flex-direction:column; align-items:center; width:100%;">
         <div id="particle-container"></div>
-        <div id="anniversary-msg" style="display:none; color:#fff; background:linear-gradient(45deg, var(--pastel-orange), var(--pastel-blue)); padding:15px; margin-bottom:25px; border-radius:8px; font-weight:bold; text-align:center; width:100%; max-width:600px;">HAPPY 10TH MENSIVERSARY ELIN! 🧡💙</div>
+        
+        <div id="anniversary-banner" style="display:none; color:#fff; background:linear-gradient(45deg, var(--pastel-orange), var(--pastel-blue)); padding:15px; margin-bottom:25px; border-radius:8px; font-weight:bold; text-align:center; width:100%; max-width:600px; box-shadow: 0 0 20px var(--pastel-orange);">HAPPY 10TH MENSIVERSARY ELIN! 🧡💙</div>
 
-        <div class="header" style="border:2px solid var(--pastel-blue); padding:25px; background:rgba(174,198,207,0.08); text-align:center; width:90%; max-width:700px;">
-            <h1 class="glitch-text">PROJECT: RAYNE & ELIN</h1>
-            
-            <div class="audio-controls">
-                <span>VOL</span>
+        <div class="header" style="border:2px solid var(--pastel-blue); padding:30px; background:rgba(174,198,207,0.08); text-align:center; width:90%; max-width:700px;">
+            <h1 id="visualizer-text">PROJECT: RAYNE & ELIN</h1>
+            <div style="margin-top:15px; display:flex; align-items:center; justify-content:center; gap:10px; color:var(--pastel-blue); font-size:0.8rem;">
+                <span>VOLUME</span>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
             </div>
-
-            <div class="stats-box" style="margin-top:20px; border:none;">
-                <div style="font-size:1.1rem;">DAYS SINCE WE MET: <span class="stat-highlight" id="days-met">--</span></div>
-                <div style="font-size:1.1rem; margin:10px 0;">TOTAL TIME: <span class="stat-highlight" id="total-time">--</span></div>
-                <div class="stat-highlight" id="mensiversary-count">10 MONTHS TOGETHER</div>
-                <div style="font-size:0.8rem; margin-top:10px; color:var(--pastel-blue);">1-YEAR ANNIVERSARY IN: <span class="stat-highlight" id="oy-cd">--</span></div>
+            <div style="margin-top:20px; line-height:1.8;">
+                <div>DAYS SINCE WE MET: <span class="stat-highlight" id="days-met">--</span></div>
+                <div>TOTAL TIME: <span class="stat-highlight" id="total-time">--</span></div>
+                <div style="margin-top:10px; border-top:1px solid rgba(174,198,207,0.2); padding-top:10px; color:var(--pastel-blue);">
+                    1-YEAR ANNIVERSARY IN:<br>
+                    <span class="stat-highlight" id="oy-cd" style="font-size:1.2rem;">--D --H --M --S</span>
+                </div>
             </div>
         </div>
 
-        <audio id="bg-music" src="Neon_Heartstrings.mp3" loop></audio>
+        <audio id="bg-music" src="Neon_Heartstrings.mp3" loop crossorigin="anonymous"></audio>
 
-        <div style="width:100%; max-width:600px; text-align:center; margin:40px 0;">
-            <div style="color:var(--pastel-blue); font-size:0.8rem; letter-spacing:2px;">> SCANNING MEMORY CORE...</div>
-            <div style="display:flex; height:35px; border:1px solid var(--pastel-blue); background:rgba(174,198,207,0.1); padding:3px; margin:15px 0;">
-                <div class="core-segment" onmouseover="showMsg(1)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(2)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(3)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(4)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(5)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(6)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(7)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(8)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(9)" onmouseout="clearMsg()"></div>
-                <div class="core-segment" onmouseover="showMsg(10)" onmouseout="clearMsg()"></div>
-            </div>
-            <div id="core-display" style="color:var(--pastel-orange); font-style:italic;">Hover to decrypt...</div>
-        </div>
-
-        <h2 style="color:var(--pastel-blue); letter-spacing:5px; border-bottom:1px solid;">VIRTUAL POLAROIDS</h2>
         <div class="gallery">
             <div class="polaroid" onclick="openLightbox(this)"><img src="20251010_151320.webp"><div class="caption">The Beginning</div></div>
             <div class="polaroid" onclick="openLightbox(this)"><img src="20251209_165557.webp"><div class="caption">City Lights</div></div>
@@ -157,41 +140,55 @@
         <footer>Coded by RayneWater in <span class="glow">30 minutes</span></footer>
     </div>
 
-    <div id="lightbox" onclick="closeLightbox()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; justify-content:center; align-items:center;">
-        <img id="lightbox-img" style="max-width:90%; max-height:90%; border:5px solid #fff; transform:scale(0.5); transition:0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-    </div>
+    <div id="lightbox" onclick="closeLightbox()"><img id="lightbox-img" src=""></div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         const start = new Date('2025-04-17T00:00:00');
         const oneYear = new Date('2026-04-17T00:00:00');
         const music = document.getElementById('bg-music');
-        const volSlider = document.getElementById('volume-slider');
-        const memories = { 1: "Month 1: The spark...", 2: "Month 2: Rhythm...", 3: "Month 3: Best friends...", 4: "Month 4: Teamwork...", 5: "Month 5: Halfway!", 6: "Month 6: Always you.", 7: "Month 7: Building dreams.", 8: "Month 8: Your smile.", 9: "Month 9: Almost there!", 10: "Happy Mensiversary! 🦈🐰" };
+        const visualizerText = document.getElementById('visualizer-text');
+        const waterLevel = document.getElementById('water-level');
+        const status = document.getElementById('status');
+        let audioCtx, analyzer, dataArray;
 
-        function showMsg(id) { document.getElementById('core-display').innerHTML = memories[id]; }
-        function clearMsg() { document.getElementById('core-display').innerHTML = "Hover to decrypt..."; }
-
-        volSlider.addEventListener('input', (e) => { music.volume = e.target.value; });
-
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart-particle'; heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            document.getElementById('heart-rain-container').appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
-        }
-        const heartInterval = setInterval(createHeart, 300);
-
+        // LOADING BAR
         let fill = 0;
         const waterInterval = setInterval(() => {
-            if (fill >= 100) { clearInterval(waterInterval); document.getElementById('status').innerHTML = "SYSTEM HYDRATED."; document.getElementById('start-btn').style.display = 'block'; }
-            else { fill++; document.getElementById('water-level').style.height = fill + '%'; }
-        }, 50);
+            fill += 1; document.getElementById('water-level').style.height = fill + '%';
+            if (fill >= 100) { clearInterval(waterInterval); status.innerHTML = "SYSTEM READY."; document.getElementById('start-btn').style.display = 'block'; }
+        }, 30);
+
+        function openLightbox(el) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = el.querySelector('img').src;
+            lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10);
+        }
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 400);
+        }
+
+        function setupVisualizer() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyzer = audioCtx.createAnalyser();
+            const source = audioCtx.createMediaElementSource(music);
+            source.connect(analyzer); analyzer.connect(audioCtx.destination);
+            analyzer.fftSize = 64; dataArray = new Uint8Array(analyzer.frequencyBinCount);
+            renderVisualizer();
+        }
+        function renderVisualizer() {
+            requestAnimationFrame(renderVisualizer);
+            analyzer.getByteFrequencyData(dataArray);
+            let bass = dataArray[1]; 
+            let scale = 1 + (bass / 450); let glitch = bass / 25;
+            visualizerText.style.transform = `scale(${scale})`;
+            visualizerText.style.textShadow = `${glitch}px 0 0 rgba(255,0,0,0.7), -${glitch}px 0 0 rgba(0,255,255,0.7)`;
+        }
 
         function openVault() {
-            music.volume = volSlider.value; music.play();
+            if(!audioCtx) setupVisualizer();
+            music.volume = document.getElementById('volume-slider').value; music.play();
             clearInterval(heartInterval);
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main-content').style.visibility = 'visible';
@@ -205,47 +202,51 @@
             for (let i = 0; i < 15; i++) {
                 const div = document.createElement('div');
                 div.className = 'particle'; div.innerHTML = emojis[i % 2];
-                div.style.left = Math.random() * 100 + 'vw';
-                div.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                div.style.left = Math.random() * 100 + 'vw'; div.style.animationDuration = (Math.random() * 8 + 10) + 's';
                 container.appendChild(div);
             }
         }
 
-        function openLightbox(el) {
-            const lb = document.getElementById('lightbox');
-            document.getElementById('lightbox-img').src = el.querySelector('img').src;
-            lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10);
+        function createHeart() {
+            const heart = document.createElement('div'); heart.className = 'heart-particle'; heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw'; heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.getElementById('heart-rain-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
         }
-        function closeLightbox() {
-            const lb = document.getElementById('lightbox');
-            lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 400);
+        const heartInterval = setInterval(createHeart, 300);
+
+        function firework() {
+            const colors = ['#FFB347', '#AEC6CF', '#FFFFFF'];
+            confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+            confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
         }
 
-        function update() {
+        function updateTimers() {
             const now = new Date();
-            const targetDate = new Date('2026-02-17T00:00:00');
             const diff = now - start;
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / (1000 * 60)) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            document.getElementById('total-time').innerHTML = `${d}D : ${h}H : ${m}M : ${s}S`;
-            document.getElementById('days-met').innerHTML = `${d}`;
-
-            let months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
-            if (now.getDate() < start.getDate()) months--;
-            document.getElementById('mensiversary-count').innerHTML = `${months} MONTHS TOGETHER`;
-
+            const d = Math.floor(diff / 86400000);
+            document.getElementById('days-met').innerHTML = d;
+            document.getElementById('total-time').innerHTML = `${d}D : ${Math.floor((diff/3600000)%24)}H : ${Math.floor((diff/60000)%60)}M : ${Math.floor((diff/1000)%60)}S`;
+            
             const diffOY = oneYear - now;
-            const od = Math.floor(diffOY / (1000 * 60 * 60 * 24));
-            document.getElementById('oy-cd').innerHTML = `${od}D ${Math.floor((diffOY / 3600000) % 24)}H ${Math.floor((diffOY / 60000) % 60)}M`;
+            const od = Math.floor(diffOY / 86400000);
+            const oh = Math.floor((diffOY / 3600000) % 24);
+            const om = Math.floor((diffOY / 60000) % 60);
+            const os = Math.floor((diffOY / 1000) % 60);
+            document.getElementById('oy-cd').innerHTML = `${od}D ${oh}H ${om}M ${os}S`;
 
-            if (now >= targetDate) {
-                document.getElementById('anniversary-msg').style.display = 'block';
-                if (now.getSeconds() % 10 === 0) confetti({ particleCount: 70, spread: 70, colors: ['#FFB347', '#AEC6CF'] });
+            // ANNIVERSARY PERMANENT LOGIC (FEB 17)
+            if (now.getMonth() === 1 && now.getDate() === 17) {
+                document.getElementById('anniversary-banner').style.display = 'block';
+                // Trigger every 3 seconds
+                if (now.getSeconds() % 3 === 0) {
+                   firework();
+                   confetti({ particleCount: 40, spread: 70, origin: { y: 0.6 }, colors: ['#FFB347', '#AEC6CF'] });
+                }
             }
         }
-        setInterval(update, 1000); update();
+        setInterval(updateTimers, 1000);
+        document.getElementById('volume-slider').addEventListener('input', (e) => { music.volume = e.target.value; });
     </script>
 </body>
 </html>
