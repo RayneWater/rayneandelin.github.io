@@ -73,15 +73,9 @@
         .polaroid:hover { transform: rotateX(8deg) rotateY(8deg) scale(1.05); z-index: 10; }
         .polaroid img { width: 100%; height: 280px; object-fit: cover; pointer-events: none; }
         
-        /* UPDATED CAPTION STYLE */
         .caption { 
-            color: #222; 
-            text-align: center; 
-            font-weight: 800; 
-            font-size: 1.3rem; 
-            margin-top: 15px; 
-            font-family: 'Brush Script MT', cursive;
-            letter-spacing: 1px;
+            color: #222; text-align: center; font-weight: 800; font-size: 1.3rem; 
+            margin-top: 15px; font-family: 'Brush Script MT', cursive; letter-spacing: 1px;
         }
         
         #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; justify-content: center; align-items: center; }
@@ -102,7 +96,7 @@
     <div id="loader">
         <div id="heart-rain-container"></div>
         <div style="color:var(--pastel-orange); letter-spacing:8px; font-weight:bold; animation: brandGlow 2s infinite alternate;">RAYNEWATER PROJECTS</div>
-        <div id="status" style="color:var(--pastel-blue); font-size:0.8rem; margin: 15px 0;">HYDRATING VAULT...</div>
+        <div id="status" style="color:var(--pastel-blue); font-size:0.8rem; margin: 15px 0;">TUNING BASS ENGINE...</div>
         <div style="width:280px; height:40px; border:2px solid var(--pastel-blue); border-radius:20px; position:relative; overflow:hidden;">
             <div id="water-level" style="position:absolute; bottom:0; left:0; width:100%; height:0%; background:var(--water-color); transition:0.1s linear;"></div>
         </div>
@@ -170,6 +164,7 @@
         const music = document.getElementById('bg-music');
         const visualizerText = document.getElementById('visualizer-text');
         const waterLevel = document.getElementById('water-level');
+        const status = document.getElementById('status');
         let audioCtx, analyzer, dataArray;
 
         const memories = { 
@@ -191,7 +186,7 @@
         let fill = 0;
         const waterInterval = setInterval(() => {
             fill += 1; waterLevel.style.height = fill + '%';
-            if (fill >= 100) { clearInterval(waterInterval); document.getElementById('status').innerHTML = "VAULT READY."; document.getElementById('start-btn').style.display = 'block'; }
+            if (fill >= 100) { clearInterval(waterInterval); status.innerHTML = "VAULT READY."; document.getElementById('start-btn').style.display = 'block'; }
         }, 30);
 
         function openLightbox(el) {
@@ -209,14 +204,25 @@
             analyzer = audioCtx.createAnalyser();
             const source = audioCtx.createMediaElementSource(music);
             source.connect(analyzer); analyzer.connect(audioCtx.destination);
-            analyzer.fftSize = 64; dataArray = new Uint8Array(analyzer.frequencyBinCount);
+            
+            // Higher FFT size for better resolution in low frequencies
+            analyzer.fftSize = 512; 
+            dataArray = new Uint8Array(analyzer.frequencyBinCount);
             renderVisualizer();
         }
+
         function renderVisualizer() {
             requestAnimationFrame(renderVisualizer);
             analyzer.getByteFrequencyData(dataArray);
-            let bass = dataArray[1]; 
-            let scale = 1 + (bass / 450); let glitch = bass / 25;
+            
+            // TARGET: 50Hz to 80Hz
+            // Formula: bin = freq / (sampleRate / fftSize)
+            // For 44100Hz and 512 FFT, each bin is ~86Hz. 
+            // We target the first 2 bins to isolate the sub/kick range accurately.
+            let bass = (dataArray[1] + dataArray[2]) / 2; 
+            
+            let scale = 1 + (bass / 450); 
+            let glitch = bass / 25;
             visualizerText.style.transform = `scale(${scale})`;
             visualizerText.style.textShadow = `${glitch}px 0 0 rgba(255,0,0,0.7), -${glitch}px 0 0 rgba(0,255,255,0.7)`;
         }
