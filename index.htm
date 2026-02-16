@@ -71,75 +71,48 @@
             font-family: inherit; letter-spacing: 2px; border-radius: 5px; box-shadow: 0 0 10px var(--pastel-orange);
         }
 
-        /* --- Enhanced Glitch Header --- */
+        /* --- Chromatic Glitch Header --- */
         .header {
             text-align: center; border: 2px solid var(--pastel-blue);
             padding: 25px; background: rgba(174, 198, 207, 0.08);
             box-shadow: 0 0 30px rgba(174, 198, 207, 0.2); margin-bottom: 30px;
             width: 90%; max-width: 700px;
         }
-
-        .glitch-wrapper { position: relative; display: inline-block; }
         .glitch-text {
-            color: var(--pastel-orange);
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 0;
+            color: var(--pastel-orange); font-size: 2rem; font-weight: bold; margin: 0;
             position: relative;
             text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.05em 0 rgba(0, 255, 0, 0.75), 0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
             animation: glitch 500ms infinite;
         }
-
         @keyframes glitch {
-            0% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
-            14% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
-            15% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
-            49% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
-            50% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
-            99% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
+            0%, 14% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
+            15%, 49% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
+            50%, 99% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
             100% { text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em -0.05em 0 rgba(0, 0, 255, 0.75); }
         }
 
-        /* --- Enhanced Visibility Timers --- */
-        .stats-box {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .stat-item {
-            color: #fff;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(174, 198, 207, 0.5);
-        }
-        .stat-highlight {
-            color: var(--pastel-orange);
-            font-weight: bold;
-            text-shadow: 0 0 12px var(--pastel-orange);
-        }
+        /* --- Timers --- */
+        .stat-item { color: #fff; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 10px; }
+        .stat-highlight { color: var(--pastel-orange); font-weight: bold; text-shadow: 0 0 10px var(--pastel-orange); }
 
         .anniversary-alert { display: none; color: #fff; background: linear-gradient(45deg, var(--pastel-orange), var(--pastel-blue)); padding: 15px; margin-bottom: 25px; border-radius: 8px; font-weight: bold; width: 100%; max-width: 600px; text-align: center; }
 
         /* --- Memory Core --- */
         .core-wrapper { width: 100%; max-width: 600px; margin: 40px 0; text-align: center; }
-        .core-bar { display: flex; height: 35px; border: 1px solid var(--pastel-blue); background: rgba(174, 198, 207, 0.1); padding: 3px; margin: 15px 0; }
+        .core-bar { display: flex; height: 35px; border: 1px solid var(--pastel-blue); background: rgba(174, 198, 207, 0.1); padding: 3px; }
         .core-segment { flex: 1; margin: 0 2px; background: var(--pastel-orange); opacity: 0.5; transition: 0.3s; cursor: help; }
         .core-segment:hover { opacity: 1; transform: scaleY(1.1); box-shadow: 0 0 15px var(--pastel-orange); }
 
         /* --- Responsive Gallery --- */
         .gallery-title { color: var(--pastel-blue); letter-spacing: 8px; margin: 50px 0 25px 0; border-bottom: 2px solid; padding-bottom: 10px; font-size: 1.4rem; }
-        .gallery { 
-            display: grid; gap: 25px; width: 100%; max-width: 1100px; 
-            grid-template-columns: repeat(3, 1fr); 
-        }
+        .gallery { display: grid; gap: 25px; width: 100%; max-width: 1100px; grid-template-columns: repeat(3, 1fr); }
         @media (max-width: 768px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
 
         .polaroid { 
             background: #fff; padding: 10px 10px 35px 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
             cursor: zoom-in; transition: transform 0.4s ease, box-shadow 0.4s ease; 
         }
-        .polaroid:hover { transform: rotateX(10deg) rotateY(10deg) scale(1.08); z-index: 10; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+        .polaroid:hover { transform: rotateX(10deg) rotateY(10deg) scale(1.08); z-index: 10; }
         .polaroid img { width: 100%; height: 300px; object-fit: cover; }
         .caption { color: #333; text-align: center; font-weight: bold; font-size: 0.9rem; margin-top: 15px; }
 
@@ -173,16 +146,14 @@
         <div id="anniversary-msg" class="anniversary-alert">HAPPY 10TH MENSIVERSARY ELIN! 🧡💙</div>
 
         <div class="header">
-            <div class="glitch-wrapper">
-                <h1 class="glitch-text">PROJECT: RAYNE & ELIN</h1>
-            </div>
+            <h1 class="glitch-text">PROJECT: RAYNE & ELIN</h1>
             <div class="stats-box">
                 <div class="stat-item">DAYS SINCE WE MET: <span class="stat-highlight" id="days-met">--</span></div>
                 <div class="stat-item">TOTAL TIME: <span class="stat-highlight" id="total-time">--</span></div>
                 <div class="stat-item" style="border-top: 1px solid rgba(174,198,207,0.2); padding-top: 10px;">
                     <span class="stat-highlight" id="mensiversary-count">10 MONTHS TOGETHER</span>
                 </div>
-                <div class="stat-item" id="one-year-countdown" style="font-size: 1rem; color: var(--pastel-blue);">
+                <div class="stat-item" style="font-size: 1rem; color: var(--pastel-blue);">
                     1-YEAR ANNIVERSARY IN: <span class="stat-highlight" id="oy-cd">--</span>
                 </div>
             </div>
@@ -209,12 +180,12 @@
 
         <h2 class="gallery-title">VIRTUAL POLAROIDS</h2>
         <div class="gallery">
-            <div class="polaroid" onclick="openLightbox(this)"><img src="20251010_151320.jpg"><div class="caption">The Beginning</div></div>
-            <div class="polaroid" onclick="openLightbox(this)"><img src="20251209_165557.jpg"><div class="caption">City Lights</div></div>
-            <div class="polaroid" onclick="openLightbox(this)"><img src="IMG_20260209_013641.jpg"><div class="caption">M-10 Smiles</div></div>
-            <div class="polaroid" onclick="openLightbox(this)"><img src="IMG_20260208_235212.jpg"><div class="caption">Home Fun</div></div>
-            <div class="polaroid" onclick="openLightbox(this)"><img src="Memory_05.jpg"><div class="caption">Sunset Glow</div></div>
-            <div class="polaroid" onclick="openLightbox(this)"><img src="Memory_06.jpg"><div class="caption">Mirror Hugs</div></div>
+            <div class="polaroid" onclick="openLightbox(this)"><img src="20251010_151320.webp"><div class="caption">The Beginning</div></div>
+            <div class="polaroid" onclick="openLightbox(this)"><img src="20251209_165557.webp"><div class="caption">City Lights</div></div>
+            <div class="polaroid" onclick="openLightbox(this)"><img src="IMG_20260209_013641.webp"><div class="caption">M-10 Smiles</div></div>
+            <div class="polaroid" onclick="openLightbox(this)"><img src="IMG_20260208_235212.webp"><div class="caption">Home Fun</div></div>
+            <div class="polaroid" onclick="openLightbox(this)"><img src="Memory_05.webp"><div class="caption">Sunset Glow</div></div>
+            <div class="polaroid" onclick="openLightbox(this)"><img src="Memory_06.webp"><div class="caption">Mirror Hugs</div></div>
         </div>
 
         <footer>Coded by RayneWater in <span class="glow">30 minutes</span></footer>
@@ -267,7 +238,7 @@
 
         function openVault() {
             const music = document.getElementById('bg-music');
-            music.volume = 0.5; // Reduced volume as requested
+            music.volume = 0.5;
             music.play();
             clearInterval(heartInterval);
             document.getElementById('loader').style.display = 'none';
