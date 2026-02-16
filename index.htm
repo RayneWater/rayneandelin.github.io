@@ -23,7 +23,7 @@
             min-height: 100vh; width: 100vw; overflow-x: hidden;
         }
 
-        /* --- LOADING & BRANDING --- */
+        /* --- LOADING GLOW & HEART RAIN --- */
         @keyframes brandGlow {
             from { text-shadow: 0 0 5px var(--pastel-orange); }
             to { text-shadow: 0 0 25px var(--pastel-orange), 0 0 40px #fff; }
@@ -34,9 +34,10 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             padding: 20px; text-align: center;
         }
+        #heart-rain-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
         .heart-particle {
             position: absolute; color: #ff6b6b; font-size: 1.5rem;
-            top: -50px; animation: fall linear infinite; pointer-events: none;
+            top: -50px; animation: fall linear infinite;
         }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
@@ -53,12 +54,15 @@
         body.open #shutter-top { transform: translateY(-100%); }
         body.open #shutter-bottom { transform: translateY(100%); }
 
-        /* --- MAIN CONTENT & VISUALIZER --- */
+        /* --- MAIN CONTENT & PARTICLES --- */
         #main-content { 
             visibility: hidden; width: 100%; max-width: 1100px;
             display: flex; flex-direction: column; align-items: center; 
-            padding: 20px 15px; margin: 0 auto;
+            padding: 20px 15px; margin: 0 auto; position: relative;
         }
+        #particle-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .particle { position: absolute; font-size: 1.8rem; opacity: 0.3; animation: drift linear infinite; }
+        @keyframes drift { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-10vh) rotate(360deg); } }
         
         #visualizer-text {
             color: var(--pastel-orange); font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: bold;
@@ -67,7 +71,6 @@
             animation: brandGlow 2s infinite alternate;
         }
 
-        /* --- RESTORED VOLUME CONTROL --- */
         .vol-control {
             margin-top: 15px; display: flex; align-items: center; justify-content: center; 
             gap: 15px; color: var(--pastel-blue); font-size: 0.8rem;
@@ -75,44 +78,29 @@
         }
         input[type=range] { cursor: pointer; accent-color: var(--pastel-orange); width: 120px; }
 
-        /* --- MEMORY CORE --- */
+        /* --- MEMORY CORE & TILT --- */
         .core-wrapper { width: 100%; max-width: 600px; text-align: center; margin: 30px 0; }
         .core-bar { display: flex; height: 45px; border: 1px solid var(--pastel-blue); background: rgba(174, 198, 207, 0.1); padding: 3px; margin: 15px 0; }
-        .core-segment { flex: 1; margin: 0 2px; background: var(--pastel-orange); opacity: 0.5; transition: 0.3s; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .core-segment { flex: 1; margin: 0 2px; background: var(--pastel-orange); opacity: 0.5; transition: 0.3s; cursor: pointer; }
         .core-segment:hover, .core-segment:active { opacity: 1; transform: scaleY(1.1); box-shadow: 0 0 15px var(--pastel-orange); }
         #core-display { min-height: 100px; padding: 10px; font-size: 1rem; color: #eee; width: 100%; line-height: 1.5; }
 
-        /* --- TILT GALLERY --- */
-        .gallery-title { color: var(--pastel-blue); letter-spacing: 5px; font-size: 1.3rem; margin-top: 50px; border-bottom: 1px solid; padding-bottom: 5px; text-align: center; }
         .gallery { 
-            display: grid; gap: 20px; width: 100%; 
-            grid-template-columns: repeat(2, 1fr); 
+            display: grid; gap: 20px; width: 100%; grid-template-columns: repeat(2, 1fr); 
             margin: 25px auto; perspective: 1200px;
         }
         @media (min-width: 900px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
-        
         .polaroid { 
             background: #fff; padding: 10px 10px 45px 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
-            cursor: pointer; transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s;
+            cursor: pointer; transform-style: preserve-3d; transition: transform 0.5s;
         }
-        .polaroid:hover, .polaroid:active { 
-            transform: rotateX(10deg) rotateY(10deg) translateZ(30px); 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-            z-index: 10;
-        }
+        .polaroid:hover { transform: rotateX(10deg) rotateY(10deg) translateZ(30px); z-index: 10; }
         .polaroid img { width: 100%; height: 220px; object-fit: cover; pointer-events: none; }
-        @media (min-width: 768px) { .polaroid img { height: 280px; } }
-        .caption { color: #222; text-align: center; font-weight: 800; font-size: 1.3rem; margin-top: 15px; font-family: 'Brush Script MT', cursive; letter-spacing: 1px; }
+        .caption { color: #222; text-align: center; font-weight: 800; font-size: 1.3rem; margin-top: 15px; font-family: 'Brush Script MT', cursive; }
 
-        /* --- LIGHTBOX --- */
         #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; justify-content: center; align-items: center; }
         #lightbox.active { display: flex; }
-        #lightbox img { max-width: 95%; max-height: 85%; border: 4px solid #fff; transform: scale(0.5); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        #lightbox.active img { transform: scale(1); }
-
-        .stat-highlight { color: var(--pastel-orange); font-weight: bold; text-shadow: 0 0 8px var(--pastel-orange); }
-        footer { margin-top: 40px; padding: 40px; text-align: center; border-top: 1px solid rgba(174,198,207,0.1); width: 100%; font-size: 0.8rem; }
+        #lightbox img { max-width: 95%; max-height: 85%; border: 4px solid #fff; transform: scale(1); }
     </style>
 </head>
 <body>
@@ -120,7 +108,7 @@
     <div id="loader">
         <div id="heart-rain-container"></div>
         <div style="color:var(--pastel-orange); letter-spacing:8px; font-weight:bold; animation: brandGlow 2s infinite alternate;">RAYNEWATER PROJECTS</div>
-        <div id="status" style="color:var(--pastel-blue); font-size:0.8rem; margin: 15px 0;">RE-CALIBRATING CONTROLS...</div>
+        <div id="status" style="color:var(--pastel-blue); font-size:0.8rem; margin: 15px 0;">INJECTING PARTICLES...</div>
         <div style="width:280px; height:40px; border:2px solid var(--pastel-blue); border-radius:20px; position:relative; overflow:hidden;">
             <div id="water-level" style="position:absolute; bottom:0; left:0; width:100%; height:0%; background:var(--water-color); transition:0.1s linear;"></div>
         </div>
@@ -131,22 +119,16 @@
     <div class="shutter" id="shutter-bottom"></div>
 
     <div id="main-content">
+        <div id="particle-container"></div>
         <div id="anniversary-banner" style="display:none; color:#fff; background:linear-gradient(45deg, var(--pastel-orange), var(--pastel-blue)); padding:15px; margin-bottom:25px; border-radius:8px; font-weight:bold; text-align:center; width:95%; max-width:600px; box-shadow: 0 0 20px var(--pastel-orange);">HAPPY 10TH MENSIVERSARY ELIN! 🧡💙</div>
 
-        <div class="header" style="border:2px solid var(--pastel-blue); padding:30px; background:rgba(174,198,207,0.08); text-align:center; width:100%; max-width:700px; margin: 0 auto;">
+        <div class="header" style="border:2px solid var(--pastel-blue); padding:30px; background:rgba(174,198,207,0.08); text-align:center; width:100%; max-width:700px;">
             <h1 id="visualizer-text">PROJECT: RAYNE & ELIN</h1>
-            
-            <div class="vol-control">
-                <span>VOLUME</span>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
-            </div>
-
+            <div class="vol-control"><span>VOLUME</span><input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5"></div>
             <div style="margin-top:20px;">
-                <div>DAYS MET: <span class="stat-highlight" id="days-met">--</span></div>
-                <div style="font-size:1.1rem; margin:10px 0;">TOTAL: <span class="stat-highlight" id="total-time">--</span></div>
-                <div style="margin-top:10px; border-top:1px solid rgba(174,198,207,0.2); padding-top:10px; color:var(--pastel-blue);">
-                    1-YEAR ANNIVERSARY IN: <span class="stat-highlight" id="oy-cd">--</span>
-                </div>
+                <div>DAYS MET: <span style="color:var(--pastel-orange); font-weight:bold;" id="days-met">--</span></div>
+                <div style="font-size:1.1rem; margin:10px 0;">TOTAL: <span style="color:var(--pastel-orange); font-weight:bold;" id="total-time">--</span></div>
+                <div style="margin-top:10px; color:var(--pastel-blue);">ANNIVERSARY IN: <span style="color:var(--pastel-orange); font-weight:bold;" id="oy-cd">--</span></div>
             </div>
         </div>
 
@@ -169,7 +151,7 @@
             <div id="core-display" style="color:var(--pastel-orange); font-style:italic;">[ TAP A SEGMENT TO DECRYPT ]</div>
         </div>
 
-        <h2 class="gallery-title">VIRTUAL POLAROIDS</h2>
+        <h2 style="color:var(--pastel-blue); letter-spacing:5px; margin-top:50px; border-bottom:1px solid; padding-bottom:5px;">VIRTUAL POLAROIDS</h2>
         <div class="gallery">
             <div class="polaroid" onclick="openLightbox(this)"><img src="20251010_151320.webp"><div class="caption">The Beginning of Us</div></div>
             <div class="polaroid" onclick="openLightbox(this)"><img src="20251209_165557.webp"><div class="caption">City Lights</div></div>
@@ -179,7 +161,7 @@
             <div class="polaroid" onclick="openLightbox(this)"><img src="Memory_06.webp"><div class="caption">In My Arms</div></div>
         </div>
 
-        <footer>Coded by RayneWater in <span class="glow">30 minutes</span></footer>
+        <footer>Coded by RayneWater in <span style="color:var(--pastel-orange); font-weight:bold;">30 minutes</span></footer>
     </div>
 
     <div id="lightbox" onclick="closeLightbox()"><img id="lightbox-img" src=""></div>
@@ -193,20 +175,17 @@
         const volumeSlider = document.getElementById('volume-slider');
         let audioCtx, analyzer, dataArray;
 
-        const memories = { 
-            1: "Month 1: The spark that started it all. Every second with you felt like finding a piece of me I never knew was missing.", 
-            2: "Month 2: Finding our rhythm. Watching you laugh became my favorite song, and your happiness, my favorite mission.", 
-            3: "Month 3: Best friends and more. I realized that as long as I'm with you, I'm home.", 
-            4: "Month 4: Creating memories. From the quiet nights to the big adventures, you make everything more beautiful.", 
-            5: "Month 5: Halfway to ten! I look at you and still get the same butterflies I had on the very first day we met.", 
-            6: "Month 6: Through every laugh and quiet moment. You've taught me what it means to be truly loved.", 
-            7: "Month 7: Building dreams together. I'm so excited for our future and every little project we're going to build.", 
-            8: "Month 8: Your smile is still the brightest light in my life. Thank you for being the most incredible person I know.", 
-            9: "Month 9: Almost there, but really just the start. Every single day I choose you, and every day I love you more.", 
-            10: "Happy 10th Mensiversary Elin! 10 months down, and a lifetime of 'us' to go. You are my everything. 🦈🐰" 
-        };
-
+        const memories = { 1: "Month 1: The spark that started it all.", 2: "Month 2: Finding our rhythm.", 3: "Month 3: Best friends and more.", 4: "Month 4: Creating memories.", 5: "Month 5: Halfway to ten!", 6: "Month 6: Through every laugh and quiet moment.", 7: "Month 7: Building dreams together.", 8: "Month 8: Your smile is still the brightest light.", 9: "Month 9: Almost there, but really just the start.", 10: "Happy 10th Mensiversary Elin! 🦈🐰" };
         function showMsg(id) { document.getElementById('core-display').innerHTML = memories[id]; }
+
+        function createHeart() {
+            const container = document.getElementById('heart-rain-container');
+            const heart = document.createElement('div'); heart.className = 'heart-particle'; heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw'; heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        const heartInterval = setInterval(createHeart, 300);
 
         let fill = 0;
         const waterInterval = setInterval(() => {
@@ -214,15 +193,8 @@
             if (fill >= 100) { clearInterval(waterInterval); document.getElementById('status').innerHTML = "VAULT READY."; document.getElementById('start-btn').style.display = 'block'; }
         }, 40);
 
-        function openLightbox(el) {
-            const lb = document.getElementById('lightbox');
-            document.getElementById('lightbox-img').src = el.querySelector('img').src;
-            lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10);
-        }
-        function closeLightbox() {
-            const lb = document.getElementById('lightbox');
-            lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 400);
-        }
+        function openLightbox(el) { const lb = document.getElementById('lightbox'); document.getElementById('lightbox-img').src = el.querySelector('img').src; lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10); }
+        function closeLightbox() { const lb = document.getElementById('lightbox'); lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 400); }
 
         function setupVisualizer() {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -232,50 +204,49 @@
             analyzer.fftSize = 512; dataArray = new Uint8Array(analyzer.frequencyBinCount);
             renderVisualizer();
         }
-
         function renderVisualizer() {
             requestAnimationFrame(renderVisualizer);
             analyzer.getByteFrequencyData(dataArray);
-            let bass = (dataArray[1] + dataArray[2]) / 2; // Target 50-80Hz kick
-            let scale = 1 + (bass / 500); 
-            let glitch = bass / 25;
+            let bass = (dataArray[1] + dataArray[2]) / 2; // Target 50-80Hz
+            let scale = 1 + (bass / 500); let glitch = bass / 25;
             visualizerText.style.transform = `scale(${scale})`;
             visualizerText.style.textShadow = `${glitch}px 0 0 rgba(255,0,0,0.7), -${glitch}px 0 0 rgba(0,255,255,0.7)`;
         }
 
         function openVault() {
             if(!audioCtx) setupVisualizer();
-            music.volume = volumeSlider.value;
-            music.play();
+            music.volume = volumeSlider.value; music.play();
+            clearInterval(heartInterval);
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main-content').style.visibility = 'visible';
             document.body.classList.add('open');
+            initParticles();
         }
-
         volumeSlider.addEventListener('input', () => { music.volume = volumeSlider.value; });
+
+        function initParticles() {
+            const container = document.getElementById('particle-container');
+            const emojis = ['🦈', '🐰'];
+            for (let i = 0; i < 15; i++) {
+                const div = document.createElement('div'); div.className = 'particle'; div.innerHTML = emojis[i % 2];
+                div.style.left = Math.random() * 100 + 'vw'; div.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                div.style.top = Math.random() * 100 + 'vh';
+                container.appendChild(div);
+            }
+        }
 
         function updateTimers() {
             const now = new Date();
             const diff = now - start;
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff/3600000)%24);
-            const m = Math.floor((diff/60000)%60);
-            const s = Math.floor((diff/1000)%60);
-            document.getElementById('days-met').innerHTML = d;
-            document.getElementById('total-time').innerHTML = `${d}D : ${h}H : ${m}M : ${s}S`;
+            document.getElementById('days-met').innerHTML = Math.floor(diff / 86400000);
+            document.getElementById('total-time').innerHTML = `${Math.floor(diff/86400000)}D : ${Math.floor((diff/3600000)%24)}H : ${Math.floor((diff/60000)%60)}M : ${Math.floor((diff/1000)%60)}S`;
             
             const diffOY = oneYear - now;
-            const od = Math.floor(diffOY / 86400000);
-            const oh = Math.floor((diffOY / 3600000) % 24);
-            const om = Math.floor((diffOY / 60000) % 60);
-            const os = Math.floor((diffOY / 1000) % 60);
-            document.getElementById('oy-cd').innerHTML = `${od}D ${oh}H ${om}M ${os}S`;
+            document.getElementById('oy-cd').innerHTML = `${Math.floor(diffOY / 86400000)}D ${Math.floor((diffOY/3600000)%24)}H ${Math.floor((diffOY/60000)%60)}M ${Math.floor((diffOY/1000)%60)}S`;
 
             if (now.getMonth() === 1 && now.getDate() === 17) {
                 document.getElementById('anniversary-banner').style.display = 'block';
-                if (now.getSeconds() % 3 === 0) {
-                   confetti({ particleCount: 40, spread: 50, origin: { y: 0.6 }, colors: ['#FFB347', '#AEC6CF'] });
-                }
+                if (now.getSeconds() % 3 === 0) confetti({ particleCount: 40, spread: 50, origin: { y: 0.6 }, colors: ['#FFB347', '#AEC6CF'] });
             }
         }
         setInterval(updateTimers, 1000);
